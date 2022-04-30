@@ -18,16 +18,18 @@ $data = json_decode($consulta, true);
 print_r( $data).PHP_EOL;
 
 echo 'fin del tipo GET'.PHP_EOL;
+
 echo ''.PHP_EOL;
+
 echo 'inicio del del tipo POST'.PHP_EOL;
 
-$data_to = [
+$data_to_post = [
     'titulo' => 'Lo que el viento creó',
     'id_autor' => '4',
     'id_genero' => '5',
 ];
 
-$payload = json_encode($data_to);
+$payload = json_encode($data_to_post);
 
 $ch = curl_init('http://localhost:8000/books');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -47,5 +49,61 @@ $data = json_decode($result, true);
 print_r( $data).PHP_EOL;
 
 echo 'fin del tipo POST'.PHP_EOL;
+
+
+echo ''.PHP_EOL;
+
+echo 'inicio del del tipo PUT'.PHP_EOL;
+
+$data_to_put = [
+	'titulo' => 'Lo que el viento modificó',
+    'id_autor' => '4',
+    'id_genero' => '5',
+];
+
+$payload_put = json_encode($data_to_put);
+
+$url = 'http://localhost:8000/books/3';
+
+$ch_put = curl_init($url);
+curl_setopt($ch_put, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch_put, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch_put, CURLOPT_HTTPHEADER,
+	[ 
+	'Content-Type: application/json',
+	'Content-Length: ' . strlen($payload_put)
+	]
+);
+curl_setopt($ch_put, CURLOPT_POSTFIELDS, $payload_put);
+
+$result1 = curl_exec($ch_put);
+curl_close($ch_put).PHP_EOL;
+echo 'listo'.PHP_EOL;
+
+$data = json_decode($result1, true);
+print_r( $data).PHP_EOL;
+
+echo 'fin del tipo PUT'.PHP_EOL;
+
+echo ''.PHP_EOL;
+
+echo 'inicio del del tipo DELETE'.PHP_EOL;
+
+
+
+$url = 'http://localhost:8000/books/2';
+
+$ch_delete = curl_init($url);
+curl_setopt($ch_delete, CURLOPT_CUSTOMREQUEST, "DELETE");
+curl_setopt($ch_delete, CURLOPT_RETURNTRANSFER, true);
+
+$result2 = curl_exec($ch_delete);
+curl_close($ch_delete).PHP_EOL;
+echo 'listo'.PHP_EOL;
+
+$data = json_decode($result2, true);
+print_r( $data).PHP_EOL;
+
+echo 'fin del tipo DELETE'.PHP_EOL;
 
 

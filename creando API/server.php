@@ -57,23 +57,45 @@ switch( strtoupper($_SERVER['REQUEST_METHOD'])) {
         break;
 
     case 'POST':
+        //tomamos la entrada 'cruda'
         $json = file_get_contents('php://input');
         
+        // transformamos el json recibido a un nuevo elemento del arreglo
         $books[] = json_decode($json, true);
-
+        
+        // emitimos hacia la salida la ultima clave del arreglo de los libros
         // echo array_keys($books)[ count($books) -1 ];
+        
+        //Retornamos la colección
+        echo json_encode($books);
+        break;
+            
+    case 'PUT':
+        #Recuerda que PUT hace reemplazos! no modificaciones puntuales. Hay que enviar todo completo
+        //validamos que el recurso buscado exista
+        if (!empty($resourceId) && array_key_exists($resourceId, $books)) 
+        {    
+            //tomamos la entrada 'cruda'
+            $json = file_get_contents('php://input');
+            // transformamos el json recibido para editar un elemento del arreglo
+            $books[$resourceId] = json_decode($json, true);
+            //Retornamos la colección modificada en formato json
+            echo json_encode($books);
+        }
+        break;
+
+    case 'DELETE':
+        //Validamos que el recurso exista
+        if (!empty($resourceId) && array_key_exists($resourceId, $books)) 
+        {
+            //Eliminamos el recurso del arreglo con unset()
+            unset($books[$resourceId]);
+        }
+        //Retornamos la colección completa sin el dato eliminado
         echo json_encode($books);
         break;
 
-    case 'PUT':
-        # code...
-        break;
-
-    case 'DELET':
-        # code...
-        break;
-
     default:
-        # code...
+        echo json_encode(array(1 => 'uh flaco, no me la conteeeee'));
         break;
 }
