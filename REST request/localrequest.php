@@ -1,5 +1,14 @@
 <?php
-#primero hay que activr la API creada por nosotros mismos :3
+####Notebook Way (already another nice files with this organized was created )#####
+# Recuerda primero activr la API creada por nosotros mismos
+# debería estar en otra carpeta, el archivo router.php usa el archivo server.php
+
+# First it is necessary to activate the server wich is located in the other folder
+# the other folder contains the files router.php and server.php, router.php is the one we need to activate
+
+# (Windows)
+# In the other folder run in the terminal:
+# php -S localhost:8000 router.php
 
 echo 'inicio del del tipo GET'.PHP_EOL;
 
