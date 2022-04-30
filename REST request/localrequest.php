@@ -19,7 +19,7 @@ echo 'inicio del del tipo GET'.PHP_EOL;
 #consultando al router.php en lugar del server.php
 // $consulta = file_get_contents('http://localhost:8000/books').PHP_EOL;
 #consultando específico al router.php en lugar del server.php
-$consulta = file_get_contents('http://mauro:pass123@localhost:8000/books/1').PHP_EOL;
+$consulta = file_get_contents('http://localhost:8000/books/1').PHP_EOL;
 
 echo $consulta.PHP_EOL;
 
@@ -36,22 +36,31 @@ $data_to_post = [
     'titulo' => 'Lo que el viento creó',
     'id_autor' => '4',
     'id_genero' => '5',
+	"timestamp=".time(),
 ];
 
 $payload = json_encode($data_to_post);
+
+$key = 'APIKEY';
+$secret_key = 'APISECRET';
+
+$timestamp = time(); 
+$signature = hash_hmac('sha1', $timestamp, $secret_key);
 
 $ch = curl_init('http://localhost:8000/books');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLINFO_HEADER_OUT, true);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
- 
 curl_setopt($ch, CURLOPT_HTTPHEADER,
 	[ 
 	    'Content-Type: application/json',
-	    'Content-Length: ' . strlen($payload)
+	    'Content-Length: ' . strlen($payload),
+		"key: ".$key,
+		"sig: ".$signature
 	]
 );
+
 $result = curl_exec($ch);
 curl_close($ch).PHP_EOL;
 $data = json_decode($result, true);

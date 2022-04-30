@@ -1,18 +1,33 @@
 <?php
 
-if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])) {
-    echo json_encode(array(1 => 'uh flaco, no me la conteeeee, necesita autenticarte'));
-    die;
-}
-$user = array('PHP_AUTH_USER', $_SERVER)? $_SERVER['PHP_AUTH_USER'] : '';
-$pwd = array('PHP_AUTH_PW', $_SERVER)? $_SERVER['PHP_AUTH_PW'] : '';
-
-
-if ($user !== 'mauro' || $pwd !== 'pass123')
+if ( ! array_key_exists('HTTP_X_TOKEN', $_SERVER)) 
 {
-    echo json_encode(array(1 => 'uh flaco, no me la conteeeee, quien eres?'));
     die;
 }
+
+$url = 'http://localhost:8001';
+
+$ch = curl_init($url);
+curl_setopt(
+    $ch,
+    CURLOPT_HTTPHEADER,
+    [
+        "X-Token: {$_SERVER['HTTP_X_TOKEN']}"
+    ]
+);
+curl_setopt(
+    $ch,
+    CURLOPT_RETURNTRANSFER,
+    true
+);
+
+$ret = curl_exec( $ch);
+
+if ($ret !== 'true')
+{
+    die;
+}
+
 
 //Definimos los recursos disponibles
 $allowedResourceTypes = [
