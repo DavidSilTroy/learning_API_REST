@@ -19,7 +19,7 @@ echo 'inicio del del tipo GET'.PHP_EOL;
 #consultando al router.php en lugar del server.php
 // $consulta = file_get_contents('http://localhost:8000/books').PHP_EOL;
 #consultando específico al router.php en lugar del server.php
-$consulta = file_get_contents('http://localhost:8000/books/1').PHP_EOL;
+$consulta = file_get_contents('http://mauro:pass123@localhost:8000/books/1').PHP_EOL;
 
 echo $consulta.PHP_EOL;
 
